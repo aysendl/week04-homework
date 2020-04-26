@@ -11,29 +11,92 @@ var options = [["while ()", "loop()", "foreach()", "none of them above ()"],
                 ["unshift()", "sort()","splice()", "toString()"]]
 
 var answer = [2, 2, 0, 0, 0]
+
+var highscores =[]
 var questionNumber = 0;
-var score = 0;
-var btnstart = document.getElementById("start")
+var btnstart = document.getElementById("start");
 btnstart.addEventListener("click", function(){
-    document.getElementById("card").style.display="block"
-    document.getElementById("description").style.display="none"
-    btnstart.style.display="none"
-    
+    document.getElementById("card").style.display="block";
+    document.getElementById("description").style.display="none";
+    btnstart.style.display="none";
+    timeLeft = 75;
+    timerelement.textContent = "Time:" + timeLeft;
+    starttimer(timeLeft);
 })
+var form = document.getElementById("form")
+var initials = document.getElementById("initials")
+var submit = document.getElementById("submit")
+var goback =document.getElementById("goback")
+var clear =document.getElementById("clear")
+var scorelist=document.getElementById("scorelist")
+var questionelement = document.getElementById("question-text");
+var optionselement = document.getElementById("options");
+var resultelement = document.getElementById("results");
+var timerelement = document.getElementById("timer")
+var timeLeft = 75;
+var score = 0;
+var timeInterval;
+function starttimer() {
+ 
+    timeInterval = setInterval(function() {
+      timerelement.textContent = "Time:" + timeLeft;
+      timeLeft--;
+  
+      if (timeLeft <= 0) {
+        timerelement.textContent = "";
+        clearInterval(timeInterval);
+        
+        score = timeLeft;
+        timerelement.textContent = "";
+        clearInterval(timeInterval);
+        resultelement.textContent = "Your Final Score: " + score;
+        questionelement.textContent = "All Done!";
+        optionselement.innerHTML = "";
+        form.style.display="block";
+      }
+  
+    }, 1000);
+  }
 
 
+submit.addEventListener("click", function(){
+    form.style.display="none";
+    resultelement.textContent = "";
+    questionelement.textContent = "High Scores";
+    lastpage.style.display = "block";
+    
+
+    highscores.push(initials.value + " - " + score);
+    scorelist.innerHTML = "";
+    for(var k=0; k<highscores.length; k++){
+        var item = document.createElement("li");
+        item.textContent = highscores[k];
+        scorelist.appendChild(item);    
+    }
 
 
+    goback.addEventListener("click",function(){
+        document.getElementById("card").style.display="none"
+        document.getElementById("description").style.display="block"
+        btnstart.style.display="inline-block" 
+        questionNumber=0
+        timeLeft=75  
+        initials.value = ""
+        lastpage.style.display="none"
+        showQuestion(questionNumber);
 
+    });
+    clear.addEventListener("click", function(){
+        scorelist.innerHTML = "";
+        highscores =[];
+    })    
+});
 function showQuestion(j) {
 
-    var questionelement = document.getElementById("question-text");
     questionelement.textContent = question[j];
     
-    var optionselement = document.getElementById("options");
     optionselement.innerHTML = "";
     
-    var resultelement = document.getElementById("results")
     
     for (var i=0; i<options[j].length; i++){
         var btn = document.createElement("button"); // <button></button>
@@ -42,11 +105,12 @@ function showQuestion(j) {
     
         btn.addEventListener("click", function(){
             if(this.id == answer[j]){
-               resultelement.textContent="Correct!"
-               score = score+20
+               resultelement.textContent="Correct!";
+        
             }
             else{
-                resultelement.textContent="Wrong"
+                resultelement.textContent="Wrong";
+                timeLeft = timeLeft-15
             }
 
             questionNumber++;
@@ -55,9 +119,13 @@ function showQuestion(j) {
                 showQuestion(questionNumber);
             }
             else {
+                score = timeLeft;
+                timerelement.textContent = "";
+                clearInterval(timeInterval);
                 resultelement.textContent = "Your Final Score: " + score;
                 questionelement.textContent = "All Done!";
                 optionselement.innerHTML = "";
+                form.style.display="block";
             }
 
 
