@@ -11,10 +11,14 @@
     <div class="wrapper">
       <header>
         <h1>Coding Quiz Challenge</h1>
+        <p id="description">
+          Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score /time by ten seconds! 
+        </p>
+        <button id="start">Start Quiz</button>
       </header>
-      <div class="card">
+      <div class="card" id="card" style="display: none;">
         <div class="card-header">
-          <h2 id="question-text">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score /time by ten seconds! </h2>
+          <h2 id="question-text"></h2>
         </div>
         <div id="options" class="card-header"></div>
         <h4 id="results">

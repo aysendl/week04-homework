@@ -13,6 +13,16 @@ var options = [["while ()", "loop()", "foreach()", "none of them above ()"],
 var answer = [2, 2, 0, 0, 0]
 var questionNumber = 0;
 var score = 0;
+var btnstart = document.getElementById("start")
+btnstart.addEventListener("click", function(){
+    document.getElementById("card").style.display="block"
+    document.getElementById("description").style.display="none"
+    btnstart.style.display="none"
+    
+})
+
+
+
 
 
 function showQuestion(j) {
