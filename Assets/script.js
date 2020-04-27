@@ -32,6 +32,7 @@ var scorelist=document.getElementById("scorelist")
 var questionelement = document.getElementById("question-text");
 var optionselement = document.getElementById("options");
 var resultelement = document.getElementById("results");
+var scorefinal = document.getElementById("scoredisplay");
 var timerelement = document.getElementById("timer")
 var timeLeft = 75;
 var score = 0;
@@ -43,13 +44,11 @@ function starttimer() {
       timeLeft--;
   
       if (timeLeft <= 0) {
-        timerelement.textContent = "";
-        clearInterval(timeInterval);
-        
         score = timeLeft;
         timerelement.textContent = "";
         clearInterval(timeInterval);
-        resultelement.textContent = "Your Final Score: " + score;
+        scorefinal.style.display ="block"
+        scorefinal.textContent = "Your Final Score: " + score;
         questionelement.textContent = "All Done!";
         optionselement.innerHTML = "";
         form.style.display="block";
@@ -83,6 +82,7 @@ submit.addEventListener("click", function(){
         timeLeft=75  
         initials.value = ""
         lastpage.style.display="none"
+        scorefinal.style.display ="none"
         showQuestion(questionNumber);
 
     });
@@ -100,11 +100,11 @@ function showQuestion(j) {
     
     for (var i=0; i<options[j].length; i++){
         var btn = document.createElement("button"); // <button></button>
-        btn.setAttribute("id", i); // <button id="option1"></button>
-        btn.textContent = options[j][i]; // <button id="option1">while ()</button>
+        btn.setAttribute("id", "option"+i); // <button id="option1"></button>
+        btn.textContent = (i+1) + ". " + options[j][i]; // <button id="option1">while ()</button>
     
         btn.addEventListener("click", function(){
-            if(this.id == answer[j]){
+            if(this.id == "option"+answer[j]){
                resultelement.textContent="Correct!";
         
             }
@@ -112,6 +112,11 @@ function showQuestion(j) {
                 resultelement.textContent="Wrong";
                 timeLeft = timeLeft-15
             }
+
+
+            setTimeout(function(){
+                resultelement.textContent=""
+            },2000)
 
             questionNumber++;
 
@@ -122,7 +127,8 @@ function showQuestion(j) {
                 score = timeLeft;
                 timerelement.textContent = "";
                 clearInterval(timeInterval);
-                resultelement.textContent = "Your Final Score: " + score;
+                scorefinal.style.display ="block"
+                scorefinal.textContent = "Your Final Score: " + score;
                 questionelement.textContent = "All Done!";
                 optionselement.innerHTML = "";
                 form.style.display="block";
@@ -132,6 +138,7 @@ function showQuestion(j) {
         });
         
         optionselement.appendChild(btn);
+        optionselement.appendChild(document.createElement("br"));
     }
 }
 
