@@ -12,7 +12,14 @@ var options = [["while ()", "loop()", "foreach()", "none of them above ()"],
 
 var answer = [2, 2, 0, 0, 0]
 
-var highscores =[]
+var highscores = localStorage.getItem("highscorelist");
+if (highscores === undefined || highscores===null){
+    highscores=[]
+    localStorage.setItem("highscorelist", JSON.stringify(highscores));
+}
+else {
+    highscores = JSON.parse(localStorage.getItem("highscorelist"));
+}
 var questionNumber = 0;
 var btnstart = document.getElementById("start");
 btnstart.addEventListener("click", function(){
@@ -66,6 +73,7 @@ submit.addEventListener("click", function(){
     
 
     highscores.push(initials.value + " - " + score);
+    localStorage.setItem("highscorelist", JSON.stringify(highscores));
     scorelist.innerHTML = "";
     for(var k=0; k<highscores.length; k++){
         var item = document.createElement("li");
@@ -89,6 +97,8 @@ submit.addEventListener("click", function(){
     clear.addEventListener("click", function(){
         scorelist.innerHTML = "";
         highscores =[];
+        
+        localStorage.setItem("highscorelist", JSON.stringify(highscores));
     })    
 });
 function showQuestion(j) {
